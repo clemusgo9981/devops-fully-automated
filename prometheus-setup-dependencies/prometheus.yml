@@ -6,23 +6,11 @@ global:
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-    - targets: ['localhost:9090']
+    - targets: ['192.168.1.243:9090']
   - job_name: 'node'
-    ec2_sd_configs:
-      - region: us-east-1        
-        port: 9100
+    static_configs:
+    - targets: ['node-vm1:9100', 'node-vm2:9100'] # replace with your VMware VMs' IPs or hostnames
   - job_name: 'jenkins'
     metrics_path: /prometheus/
-    ec2_sd_configs:     
-      - region: us-east-1        
-        port: 8080
-        filters:
-          - name: tag:Application
-            values:
-              - jenkins        
-  # - job_name: 'jenkins'
-  #   metrics_path: /prometheus/
-  #   static_configs:
-  #   - targets: ['192.168.32.13:8080'] # should replace with the jenkins IP
-    
-        
+    static_configs:
+    - targets: ['192.168.1.250:8080'] # replace with your Jenkins VMware VM's IP or hostname
