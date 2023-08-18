@@ -10,7 +10,7 @@ sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_export
 rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 # setup the node-exporter dependencies
-sudo yum install git -y
+sudo apt-get install git -y
 sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/node-exporter.service /etc/systemd/system/node-exporter.service
 
@@ -70,7 +70,7 @@ cat <<EOT> /opt/sonarqube/conf/sonar.properties
 sonar.jdbc.username=sonar
 sonar.jdbc.password=admin123
 sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
-sonar.web.host=0.0.0.0
+sonar.web.host=192.168.1.241
 sonar.web.port=9000
 sonar.web.javaAdditionalOpts=-server
 sonar.search.javaOpts=-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError
@@ -103,8 +103,8 @@ EOT
 
 systemctl daemon-reload
 systemctl enable sonarqube.service
-#systemctl start sonarqube.service
-#systemctl status -l sonarqube.service
+systemctl start sonarqube.service
+systemctl status -l sonarqube.service
 apt-get install nginx -y
 rm -rf /etc/nginx/sites-enabled/default
 rm -rf /etc/nginx/sites-available/default
