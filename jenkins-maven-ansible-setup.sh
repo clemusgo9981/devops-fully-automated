@@ -42,8 +42,3 @@ sudo systemctl daemon-reload
 sudo systemctl enable node-exporter
 sudo systemctl start node-exporter
 sudo systemctl status node-exporter
-
-# Setup Terraform
-sudo apt install -y software-properties-common
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt update && sudo apt install terraform -y
