@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardware requirements: AWS Linux 2 with mimum t2.medium type instance & port 8081 should be allowed on the security groups
+# Hardware requirements: port 8081 should be allowed on the security groups
 
 
 # node-exporter installations
@@ -11,8 +11,8 @@ sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_export
 rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 # setup the node-exporter dependencies
-sudo yum install git -y
-sudo git clone -b installations https://github.com/cvamsikrishna11/devops-fully-automated.git /tmp/devops-fully-automated
+sudo apt-get install git -y
+sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/node-exporter.service /etc/systemd/system/node-exporter.service
 
 sudo systemctl daemon-reload
@@ -22,7 +22,7 @@ sudo systemctl status node-exporter
 
 
 # Nexus setup and installations
-yum install java-1.8.0-openjdk.x86_64 wget -y   
+sudo apt install java-1.8.0-openjdk.x86_64 wget -y   
 mkdir -p /opt/nexus/   
 mkdir -p /tmp/nexus/                           
 cd /tmp/nexus/
@@ -56,4 +56,3 @@ echo 'run_as_user="nexus"' > /opt/nexus/$NEXUSDIR/bin/nexus.rc
 systemctl daemon-reload
 systemctl start nexus
 systemctl enable nexus
-
