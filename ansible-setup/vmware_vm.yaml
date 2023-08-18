@@ -1,9 +1,9 @@
 plugin: vmware_vm_inventory
 
-hostname: [vCenter_or_ESXi_host] # specify the vCenter or ESXi host
-username: [your_username]        # specify the vCenter or ESXi username
-password: [your_password]        # specify the vCenter or ESXi password
-validate_certs: false            # set to false if you don't want to validate SSL certificates. It's recommended to set it to true in a production environment
+hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+username: "{{ lookup('env', 'VMWARE_USERNAME') }}"
+password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+validate_certs: false
 
 properties:
   - 'name'
