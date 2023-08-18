@@ -1,16 +1,15 @@
 #!/bin/bash
-# Hardware requirements: AWS Linux 2 with mimum t2.micro type instance & port 9090, should be allowed on the security groups
-# Attach a role to this Prometheus server with IAM policy as --> AmazonEC2ReadOnlyAccess
+# Hardware requirements: port 9090 should be allowed at firewall level.
 
 # Installing Git
-sudo yum install git -y
+sudo apt-get install git -y
 
 # Setting up prometheus
 sudo useradd --no-create-home prometheus
 sudo mkdir /etc/prometheus
 sudo mkdir /var/lib/prometheus
  
-wget  https://github.com/prometheus/prometheus/releases/download/v2.23.0/prometheus-2.23.0.linux-amd64.tar.gz
+wget https://github.com/prometheus/prometheus/releases/download/v2.23.0/prometheus-2.23.0.linux-amd64.tar.gz
 tar -xvf prometheus-2.23.0.linux-amd64.tar.gz
 sudo cp prometheus-2.23.0.linux-amd64/prometheus /usr/local/bin
 sudo cp prometheus-2.23.0.linux-amd64/promtool /usr/local/bin
@@ -20,7 +19,7 @@ sudo cp prometheus-2.23.0.linux-amd64/promtool /usr/local/bin/
 
 rm -rf prometheus-2.23.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64
 # setting up the dependencies from the repo setup
-sudo git clone -b installations https://github.com/cvamsikrishna11/devops-fully-automated.git /tmp/devops-fully-automated
+sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/prometheus.yml /etc/prometheus/
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/prometheus.service /etc/systemd/system/prometheus.service
 
