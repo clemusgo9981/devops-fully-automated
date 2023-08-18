@@ -22,7 +22,7 @@ sudo systemctl status node-exporter
 
 
 # Nexus setup and installations
-sudo apt install java-1.8.0-openjdk.x86_64 wget -y
+sudo apt-get install openjdk-8-jre wget -y
 sudo mkdir -p /opt/nexus/
 sudo mkdir -p /tmp/nexus/
 cd /tmp/nexus/
