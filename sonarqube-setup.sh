@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardware requirements: Ubuntu 20.04 instance with mimum t2.medium type instance & port 9000 (sonarqube), 9100 (node-exporter) should be allowed on the security groups
+# Hardware requirements: Ubuntu 20.04 VM & port 9000 (sonarqube), 9100 (node-exporter) should be allowed at firewall level.
 
 # node-exporter installations
 sudo useradd --no-create-home node_exporter
@@ -11,7 +11,7 @@ rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 # setup the node-exporter dependencies
 sudo yum install git -y
-sudo git clone -b installations https://github.com/cvamsikrishna11/devops-fully-automated.git /tmp/devops-fully-automated
+sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/node-exporter.service /etc/systemd/system/node-exporter.service
 
 sudo systemctl daemon-reload
@@ -110,7 +110,7 @@ rm -rf /etc/nginx/sites-enabled/default
 rm -rf /etc/nginx/sites-available/default
 cat <<EOT> /etc/nginx/sites-available/sonarqube
 server{
-    listen      80;
+    listen 80;
     server_name sonarqube.groophy.in;
 
     access_log  /var/log/nginx/sonar.access.log;
