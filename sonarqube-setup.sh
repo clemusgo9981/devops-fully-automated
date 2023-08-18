@@ -40,14 +40,14 @@ sudo update-alternatives --config java
 
 java -version
 
-sudo apt update
+sudo apt update -y
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
 
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs) -pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
 sudo apt install postgresql postgresql-contrib -y
 sudo -u postgres psql -c "SELECT version();"
 sudo systemctl enable postgresql.service
-sudo systemctl start  postgresql.service
+sudo systemctl start postgresql.service
 sudo echo "postgres:admin123" | chpasswd
 sudo runuser -l postgres -c "createuser sonar"
 sudo -i -u postgres psql -c "ALTER USER sonar WITH ENCRYPTED PASSWORD 'admin123';"
@@ -70,7 +70,7 @@ cat <<EOT> /opt/sonarqube/conf/sonar.properties
 sonar.jdbc.username=sonar
 sonar.jdbc.password=admin123
 sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
-sonar.web.host=192.168.1.241
+sonar.web.host=0.0.0.0
 sonar.web.port=9000
 sonar.web.javaAdditionalOpts=-server
 sonar.search.javaOpts=-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError
