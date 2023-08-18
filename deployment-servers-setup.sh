@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardware requirements: port 8080(application port), 9100 (node-exporter port) should be allowed at security level.
+# Hardware requirements: port 8080(application port), 9100 (node-exporter port) should be allowed at firewall level.
 # setup for the ansible configuration
 sudo apt update –y
 sudo useradd ansible
