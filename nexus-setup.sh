@@ -1,7 +1,6 @@
 #!/bin/bash
 # Hardware requirements: port 8081 should be allowed on the security groups
 
-
 # node-exporter installations
 sudo useradd --no-create-home node_exporter
 
@@ -10,8 +9,8 @@ sudo tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
 sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
 sudo rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
-# setup the node-exporter dependencies
-sudo apt-get install git -y
+# Setup node-exporter dependencies
+sudo yum install git -y
 sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/node-exporter.service /etc/systemd/system/node-exporter.service
 
@@ -20,9 +19,8 @@ sudo systemctl enable node-exporter
 sudo systemctl start node-exporter
 sudo systemctl status node-exporter
 
-
 # Nexus setup and installations
-sudo apt-get install openjdk-8-jre wget -y
+sudo yum install java-1.8.0-openjdk.x86_64 wget -y
 sudo mkdir -p /opt/nexus/
 sudo mkdir -p /tmp/nexus/
 cd /tmp/nexus/
