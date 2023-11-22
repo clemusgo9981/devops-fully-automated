@@ -20,12 +20,14 @@ sudo apt install git -y
 # Java installation (Java 11 is already installed above for Jenkins)
 
 # Installing Ansible
-sudo apt install ansible python3-pip -y
+sudo amazon-linux-extras install ansible2 -y
+sudo yum install python-pip -y
+sudo pip install boto3
 sudo useradd ansible
 echo ansible:ansible | sudo chpasswd
 sudo sed -i "s/.*#host_key_checking = False/host_key_checking = False/g" /etc/ansible/ansible.cfg
-sudo sed -i "s/.*#enable_plugins = host_list, virtualbox, yaml, constructed/enable_plugins = vmware_vm_inventory/g" /etc/ansible/ansible.cfg
-sudo ansible-galaxy collection install
+sudo sed -i "s/.*#enable_plugins = host_list, virtualbox, yaml, constructed/enable_plugins = aws_ec2/g" /etc/ansible/ansible.cfg
+sudo ansible-galaxy collection install amazon.aws
 
 # node-exporter installations
 sudo useradd --no-create-home node_exporter
