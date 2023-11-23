@@ -2,7 +2,7 @@
 # Hardware requirements: port 9090 should be allowed at firewall level.
 
 # Installing Git
-sudo apt-get install git -y
+sudo yum install git -y
 
 # Setting up prometheus
 sudo useradd --no-create-home prometheus
@@ -17,7 +17,7 @@ sudo cp -r prometheus-2.23.0.linux-amd64/consoles /etc/prometheus/
 sudo cp -r prometheus-2.23.0.linux-amd64/console_libraries /etc/prometheus
 sudo cp prometheus-2.23.0.linux-amd64/promtool /usr/local/bin/
 
-rm -rf prometheus-2.23.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64
+sudo rm -rf prometheus-2.23.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64
 # setting up the dependencies from the repo setup
 sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/prometheus.yml /etc/prometheus/
