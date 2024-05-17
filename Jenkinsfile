@@ -12,7 +12,6 @@ pipeline {
 
     tools {
         maven 'localMaven'
-        jdk 'localJdk'
     }
 
     stages {
@@ -20,41 +19,47 @@ pipeline {
             steps {
                 echo 'Cloning the application code...'
                 git branch: 'main', url: 'https://github.com/clemusgo9981/devops-fully-automated.git'
-
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'java -version'
-                sh 'mvn -U clean package'
-            }
-
-            post {
-                success {
-                    echo 'archiving....'
-                    archiveArtifacts artifacts: '**/*.war', followSymlinks: false
-                }
-            }
-        }
-
-        stage('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-        stage('Integration Test') {
-            steps {
-                sh 'mvn verify -DskipUnitTests'
-            }
-        }
         stage('Checkstyle Code Analysis') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
             }
             post {
                 success {
-                    echo 'Generated Analysis Result'
+                    echo 'Checkstyle analysis completed successfully.'
+                }
+                failure {
+                    echo 'Checkstyle violations found.'
+                }
+            }
+        }
+
+        stage('Clean and Compile') {
+            steps {
+                sh 'mvn -U clean compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+                junit '**/target/surefire-reports/*.xml'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package -DskipTests'            
+            }
+            post {
+                success {
+                    echo 'Package completed. Archiving artifacts...'
+                    archiveArtifacts artifacts: '**/target/*.war', followSymlinks: false
+                }
+                failure {
+                    echo 'Package failed. Skipping artifact archival.'
                 }
             }
         }
@@ -63,7 +68,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                        sh """
+                    sh """
                     mvn sonar:sonar \
                     -Dsonar.projectKey=maven \
                     -Dsonar.host.url=http://192.168.1.241:9000 \
@@ -83,12 +88,20 @@ pipeline {
         stage('Upload artifact to Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                sh "sed -i \"s/.*<username><\\/username>/<username>$USER_NAME<\\/username>/g\" ${WORKSPACE}/nexus-setup/settings.xml"
-                sh "sed -i \"s/.*<password><\\/password>/<password>$PASSWORD<\\/password>/g\" ${WORKSPACE}/nexus-setup/settings.xml"
-                sh 'cp ${WORKSPACE}/nexus-setup/settings.xml /var/lib/jenkins/.m2'
-                sh 'mvn clean deploy -DskipTests'
+                    sh "sed -i \"s/.*<username><\\/username>/<username>$USER_NAME<\\/username>/g\" ${WORKSPACE}/nexus-setup/settings.xml"
+                    sh "sed -i \"s/.*<password><\\/password>/<password>$PASSWORD<\\/password>/g\" ${WORKSPACE}/nexus-setup/settings.xml"
+                    sh 'cp ${WORKSPACE}/nexus-setup/settings.xml /var/lib/jenkins/.m2'
+                    sh 'mvn clean deploy -DskipTests'
                 }
-               
+            }
+            post {
+                success {
+                    echo 'Arfiacts has been backed up onto Nexus..!'
+                }
+                failure {
+                    echo 'Artifact upload failed hence removing the settings.xml file which might cause issues on the check-style'
+                    sh 'sudo rm -f /var/lib/jenkins/.m2/settings.xml'
+                }
             }
         }
 
@@ -98,7 +111,7 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'ansible-deploy-server-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                    sh "ansible-playbook -i ${WORKSPACE}/ansible-setup/vmware_vm.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
+                    sh "ansible-playbook -i ${WORKSPACE}/ansible-setup/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
                 }
             }
         }
@@ -109,7 +122,7 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'ansible-deploy-server-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                    sh "ansible-playbook -i ${WORKSPACE}/ansible-setup/vmware_vm.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
+                    sh "ansible-playbook -i ${WORKSPACE}/ansible-setup/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
                 }
             }
         }
@@ -126,7 +139,7 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'ansible-deploy-server-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                    sh "ansible-playbook -i ${WORKSPACE}/ansible-setup/vmware_vm.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
+                    sh "ansible-playbook -i ${WORKSPACE}/ansible-setup/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
                 }
             }
         }
