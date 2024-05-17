@@ -5,7 +5,6 @@ regions:
   - us-west-2
   - eu-west-1
 
-# Filtering based on the VM state (running) and other annotations or properties if needed
 filters:
   # All instances with their `Environment` tag set to `dev`
 #  tag:Environment: dev
