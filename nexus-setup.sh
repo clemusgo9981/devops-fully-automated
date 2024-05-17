@@ -32,7 +32,7 @@ sudo rm -rf /tmp/nexus/nexus.tar.gz
 sudo rsync -avzh /tmp/nexus/ /opt/nexus/
 sudo useradd nexus
 sudo chown -R nexus.nexus /opt/nexus
-sudo cat <<EOT >> /etc/systemd/system/nexus.service
+cat <<EOT >> /etc/systemd/system/nexus.service
 [Unit]
 Description=nexus service
 After=network.target
