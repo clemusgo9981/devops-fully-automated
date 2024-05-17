@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hardware requirements: Ubuntu 20.04 iVM & port 3000 (grafana), 9100 (node-exporter) should be allowed at firewall level.
+# Hardware requirements: Ubuntu 20.04 instance with mimum t2.micro type instance & port 3000 (grafana), 9100 (node-exporter) should be allowed on the security groups
 sudo apt-get install -y adduser libfontconfig1
 sudo wget https://dl.grafana.com/oss/release/grafana_7.3.4_amd64.deb
 sudo dpkg -i grafana_7.3.4_amd64.deb
