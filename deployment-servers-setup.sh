@@ -1,17 +1,17 @@
 #!/bin/bash
-# Hardware requirements: port 8080(application port), 9100 (node-exporter port) should be allowed at firewall level.
+# Hardware requirements: AWS Linux 2 with mimum t2.micro type instance & port 8080(application port), 9100 (node-exporter port) should be allowed on the security groups
 # setup for the ansible configuration
-sudo apt update –y
-sudo useradd ansible
-sudo echo "ansible:ansible" | chpasswd
+sudo yum update –y
+sudo useradd ansadmin
+sudo echo "ansadmin:ansadmin" | chpasswd
 sudo sed -i "s/.*PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 sudo sed -i 's/.*#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
 sudo echo "%wheel  ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
-sudo usermod -aG wheel ansible
+sudo usermod -aG wheel ansadmin
 sudo service sshd restart
 
 # tomcat installations
-sudo apt-get install tomcat8.5 -y
+sudo amazon-linux-extras install tomcat8.5 -y
 sudo systemctl enable tomcat
 sudo systemctl start tomcat
 
@@ -24,7 +24,7 @@ sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_export
 rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 # setup the node-exporter dependencies
-sudo apt-get install git -y
+sudo yum install git -y
 sudo git clone -b installations https://github.com/clemusgo9981/devops-fully-automated.git /tmp/devops-fully-automated
 sudo cp /tmp/devops-fully-automated/prometheus-setup-dependencies/node-exporter.service /etc/systemd/system/node-exporter.service
 
