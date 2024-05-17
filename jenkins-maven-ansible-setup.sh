@@ -5,7 +5,7 @@
 sudo yum update –y
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key # Note: Refer this link to change this key line frequently https://pkg.jenkins.io/redhat-stable/
-sudo yum upgrade
+sudo yum upgrade -y
 sudo amazon-linux-extras install java-openjdk11 -y
 sudo yum install jenkins -y
 sudo echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -13,7 +13,7 @@ sudo systemctl enable jenkins
 sudo systemctl start jenkins
 
 # Installing Git
-sudo apt install git -y
+sudo yum install git -y
 
 # Java installation (Java 11 is already installed above for Jenkins)
 
@@ -30,9 +30,9 @@ sudo ansible-galaxy collection install amazon.aws
 # node-exporter installations
 sudo useradd --no-create-home node_exporter
 wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
-tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
+sudo tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
 sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
-rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+sudo rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 # setup the node-exporter dependencies
 sudo yum install -y
