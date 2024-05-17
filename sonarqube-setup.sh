@@ -5,9 +5,9 @@
 sudo useradd --no-create-home node_exporter
 
 wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
-tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
+sudo tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
 sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
-rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+sudo rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 # setup the node-exporter dependencies
 sudo apt-get install git -y
@@ -53,7 +53,7 @@ sudo runuser -l postgres -c "createuser sonar"
 sudo -i -u postgres psql -c "ALTER USER sonar WITH ENCRYPTED PASSWORD 'admin123';"
 sudo -i -u postgres psql -c "CREATE DATABASE sonarqube OWNER sonar;"
 sudo -i -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE sonarqube to sonar;"
-sudo systemctl restart  postgresql
+sudo systemctl restart postgresql
 sudo systemctl status -l postgresql
 sudo netstat -tulpena | grep postgres
 sudo mkdir -p /sonarqube/
