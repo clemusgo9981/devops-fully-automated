@@ -6,7 +6,7 @@ sudo yum update –y
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key # Note: Refer this link to change this key line frequently https://pkg.jenkins.io/redhat-stable/
 sudo yum upgrade -y
-sudo amazon-linux-extras install java-openjdk11 -y
+sudo yum install java-17-amazon-corretto
 sudo yum install jenkins -y
 sudo echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 sudo systemctl enable jenkins
@@ -18,7 +18,7 @@ sudo yum install git -y
 # Java installation (Java 11 is already installed above for Jenkins)
 
 # Installing Ansible
-sudo amazon-linux-extras install ansible2 -y
+sudo yum install ansible2 -y
 sudo yum install python-pip -y
 sudo pip install boto3
 sudo useradd ansadmin
